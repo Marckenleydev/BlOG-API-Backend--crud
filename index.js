@@ -29,10 +29,19 @@ const storage = multer.diskStorage({
     }
 })
 
+
+app.use(express.static(path.join(__dirname, "/client")));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
+});
+
+
 const upload = multer({ storage: storage });
 app.post("/api/upload", upload.single("file"), (req, res) => {
   res.status(200).json("File has been uploaded");
 });
+
 
 mongoose.connect(process.env.DATABASE_URL,{
     // useNewUrlParser:true,
@@ -43,6 +52,6 @@ mongoose.connect(process.env.DATABASE_URL,{
 }, ()=>{
     console.log("the connection to mongoDB  is successful")
 })
-app.listen("8000", ()=>{
+app.listen(process.env.PORT || 8000, ()=>{
     console.log("Backend server is running");
 })
