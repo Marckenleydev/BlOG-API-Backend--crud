@@ -30,24 +30,18 @@ const storage = multer.diskStorage({
 })
 
 
-app.use(express.static(path.join(__dirname, "/client")));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/client/build', 'index.html'));
-});
-
 
 const upload = multer({ storage: storage });
 app.post("/api/upload", upload.single("file"), (req, res) => {
   res.status(200).json("File has been uploaded");
 });
 
+app.get('/', (req,res)=>{
+    res.send("hello to mern-ecommerce API")
+})
 
 mongoose.connect(process.env.DATABASE_URL,{
-    // useNewUrlParser:true,
-    // useFindAndModify:true,
-    // usercreateIndex:true,
-    // useUnifiedTopology:true
+    
 
 }, ()=>{
     console.log("the connection to mongoDB  is successful")
